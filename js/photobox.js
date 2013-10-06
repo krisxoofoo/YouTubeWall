@@ -69,14 +69,14 @@
         
         noPointerEvents && overlay.hide();
 
-        autoplayBtn.on('click', APControl.toggle);
+        autoplayBtn.off().on('click', APControl.toggle);
         // attach a delegated event on the thumbs container
-        thumbs.on('click', 'a', thumbsStripe.click);
+        thumbs.off().on('click', 'a', thumbsStripe.click);
         // enable scrolling gesture on mobile
         isMobile && thumbs.css('overflow', 'auto');
         
         // cancel prppogation up to the overlay container so it won't close
-        overlay.on('click', 'img', function(e){
+        overlay.off().on('click', 'img', function(e){
             e.stopPropagation();
         });
 
@@ -122,8 +122,8 @@
         var filtered = this.imageLinksFilter( object.find(target) );
 
         this.imageLinks = filtered[0];  // Array of jQuery links
-        this.images = filtered[1];      // 2D Array of image url & title
-        this.init();
+        this.images = filtered[1];      // 2D Array of image URL & title
+		this.init();
     };
 
     Photobox.prototype = {
@@ -149,7 +149,7 @@
                     clearTimeout(that.observerTimeout);
                     that.observerTimeout = setTimeout( function(){
                         var filtered = that.imageLinksFilter( that.selector.find(that.target) ),
-							activeIndex;
+							activeIndex = 0;
 	
                         that.imageLinks = filtered[0];
                         that.images = filtered[1];
@@ -158,18 +158,20 @@
 
                         that.thumbsList = thumbsStripe.generate(that.imageLinks);
 						
-						activeIndex = that.thumbsList.find('a[href="'+activeURL+'"]').eq(0).parent().index();
-						
 						thumbs.html( that.thumbsList );
-						updateIndexes(activeIndex);
-						thumbsStripe.changeActive(activeIndex, 0);
+						
+						if( activeURL ){
+							activeIndex = that.thumbsList.find('a[href="'+activeURL+'"]').eq(0).parent().index();
+							updateIndexes(activeIndex);
+							thumbsStripe.changeActive(activeIndex, 0);
+						}
                     }, 50);
                 });
         },
 
         open : function(link){
             var startImage = $.inArray(link, this.imageLinks);
-            // if image link does not exist in the imageLinks array (probably means it's not a valid part of the galery)
+            // if image link does not exist in the imageLinks array (probably means it's not a valid part of the gallery)
             if( startImage == -1 ) return false;
 
             // load the right gallery selector...
@@ -178,7 +180,6 @@
             imageLinks = this.imageLinks;
             
             photobox = this;
-            
             this.setup(1);
 
             overlay.on(transitionend, function(){
@@ -199,6 +200,7 @@
                 // if no img child found in the link
                 if( !img ) return false;
                 images.push([link.href, img.getAttribute('alt') || img.getAttribute('title') || '']);
+	
                 return true;
             }), images];
         },
@@ -275,7 +277,7 @@
                 });
             }
             
-            $(doc)[fn]({ "keydown.photobox": keyDown });
+            $(doc).off("keydown.photobox")[fn]({ "keydown.photobox": keyDown });
             
             if( 'ontouchstart' in document.documentElement ){
                 overlay.removeClass('hasArrows'); // no need for Arros on touch-enabled
@@ -326,7 +328,7 @@
 				image = $(link).find('img');
                 title = image[0].title || image[0].alt || '';
 				type = link.rel ? " class='" + link.rel +"'" : '';
-                elements.push('<li'+ type +'><a class="bulbe" href="'+ link.href +'" title="'+ title +'"><img src="'+ image[0].src +'" alt=""/></a></li>');
+                elements.push('<li'+ type +'><a href="'+ link.href +'"><img src="'+ image[0].src +'" alt="" title="'+ title +'" /></a></li>');
             };
             
             thumbsList.html( elements.join('') );
