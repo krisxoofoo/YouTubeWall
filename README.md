@@ -4,7 +4,7 @@ YouTubeWall
 ### ABOUT
 YouTubeWall is a web video gallery script, free for private and commercial use, and developed by Kris, on the basis of Pagemap Premium Portfolios in Germany
 
-Demo kris : http://test.xoofoo.org/youtubewall/
+Demo kris : https://xoofoo.org/demo/youtubewall/
 
 ### SYSTEM REQUIREMENTS
 - Apache Webserver (recommended) or IIS
@@ -18,7 +18,7 @@ Demo kris : http://test.xoofoo.org/youtubewall/
 
 ### CONFIGURATION
 You can change the look and feel of the YouTubeWall in many ways.
-Create a config.ini in the same directory as YouTubeWall and check out the available Config Tags here: http://labs.xoofoo.org
+Create a config.ini in the same directory as YouTubeWall
 
 ### EMBEDDING
 If you want to include the script (index.php) in a custom PHP file set Config Tag [Embedded Script'] to "on" and use $set['script name'] in your script to define the path to the YouTubeWall script. You can optional define a root path for config file and default images dir with $set['script dir'].
@@ -39,7 +39,6 @@ You are allows to:
 - Customize the function and design
 
 You are NOT allowed to:
-- Delete the link to getpagemap.com in the footer
 - Claim the script as your own
 - Sale parts of the script
 
